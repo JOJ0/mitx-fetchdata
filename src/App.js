@@ -115,11 +115,11 @@ function App() {
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 10;
   const monthYear = getMonthYear();
-  const url = "https://hn.algolia.com/api/v1/search?query=MIT"
+  const url = `https://api.punkapi.com/v2/beers?brewed_before=${monthYear}&abv_lt=6&per_page=50`;
 
   const [returnedState, returnedSetUrl] = useDataApi(  // originally returnedSetUrl was never received, why was it here then?
     url,  // This is the url we're fetching from
-    {hits: []}  // Initial data (an object containing "hits", which is an empty array)
+    []  // Initial data (an empty array)
   );
   // Destructure elements from the state we got returned one by one.
   let data = returnedState.data;
@@ -133,12 +133,12 @@ function App() {
     setCurrentPage(Number(e.target.textContent));
   };
 
-  let page = data.hits;
-  console.log("In App, data.hits type is:", typeof(data.hits));
-  console.log("In App, data.hits length is:", data.hits.length);
-  console.log("In App, data.hits contents is:", data.hits);
-  console.log("In App, data.hits is an array?:", Array.isArray(data.hits));
-  console.log("In App, we reassinged data.hits to page");
+  let page = data;
+  console.log("In App, data type is:", typeof(page));
+  console.log("In App, data length is:", page.length);
+  console.log("In App, data contents is:", page);
+  console.log("In App, data is an array?:", Array.isArray(page));
+  console.log("In App, we reassinged 'data' to the new name 'page'");
   if (page.length >= 1) {  // only paginate if there are items _at all_
     page = paginate(page, currentPage, pageSize);
     console.log(`In App, currentPage is: ${currentPage}`);
@@ -152,8 +152,8 @@ function App() {
       ) : (
         <ul className="list-group">
           {page.map((item) => (
-            <li key={item.objectID} className="list-group-item">
-              <a href={item.url}>{item.title}</a>
+            <li key={item.id} className="list-group-item">
+              <a href={item.image_url}>{item.name}</a>
             </li>
           ))}
         </ul>
