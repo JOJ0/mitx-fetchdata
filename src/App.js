@@ -118,9 +118,7 @@ function App() {
   const url = "https://hn.algolia.com/api/v1/search?query=MIT"
   const [{ data, isLoading, isError }] = useDataApi(
     url,
-    {
-      hits: [],
-    }
+    {hits: []}
   );
   const handlePageChange = (e) => {
     setCurrentPage(Number(e.target.textContent));
