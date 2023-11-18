@@ -116,10 +116,19 @@ function App() {
   const pageSize = 10;
   const monthYear = getMonthYear();
   const url = "https://hn.algolia.com/api/v1/search?query=MIT"
-  const [{ data, isLoading, isError }] = useDataApi(
-    url,
-    {hits: []}
+
+  const [returnedState, returnedSetUrl] = useDataApi(  // originally returnedSetUrl was never received, why was it here then?
+    url,  // This is the url we're fetching from
+    {hits: []}  // Initial data (an object containing "hits", which is an empty array)
   );
+  // Destructure elements from the state we got returned one by one.
+  let data = returnedState.data;
+  let isLoading = returnedState.isLoading;
+  let isError = returnedState.isError;  // This is still not used anywhere, so why is it here?
+  // Let's have a look at both isError and isLoading...
+  console.log("In App, isLoading and IsError are:", isLoading, isError);
+  console.log("In App, returnedSetUrl is:", returnedSetUrl);
+
   const handlePageChange = (e) => {
     setCurrentPage(Number(e.target.textContent));
   };
