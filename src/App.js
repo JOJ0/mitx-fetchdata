@@ -96,12 +96,23 @@ const dataFetchReducer = (state, action) => {
   }
 };
 
+const getMonthYear = () => {
+  // Returns a date string to pass in the URL, eg: 11-2023
+  const currentDate = new Date();
+  const currentYear = currentDate.getFullYear();
+  const currentMonth = currentDate.getMonth();
+  const monthYear = `${currentMonth - 3}-${currentYear}`; // 3 months ago
+  console.log("getMontYear returns:", monthYear)
+  return monthYear;
+}
+
 // App that gets data from Hacker News url
 function App() {
   const { Fragment, useState } = React;
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 10;
-  const url = "https://hn.algolia.com/api/v1/search?query=MIT"
+  const monthYear = getMonthYear();
+  const url = `https://api.punkapi.com/v2/beers?brewed_before=${monthYear}&abv_lt=6&per_page=30`;
   const [{ data, isLoading, isError }] = useDataApi(
     url,
     {
