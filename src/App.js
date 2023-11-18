@@ -128,7 +128,7 @@ function App() {
         </ul>
       )}
       <Pagination
-        items={data.hits}
+        items={page}
         pageSize={pageSize}
         onPageChange={handlePageChange}
       ></Pagination>
