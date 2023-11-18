@@ -133,16 +133,16 @@ function App() {
     setCurrentPage(Number(e.target.textContent));
   };
 
-  let page = data;
-  console.log("In App, data type is:", typeof(page));
-  console.log("In App, data length is:", page.length);
-  console.log("In App, data contents is:", page);
-  console.log("In App, data is an array?:", Array.isArray(page));
-  console.log("In App, we reassinged 'data' to the new name 'page'");
-  if (page.length >= 1) {  // only paginate if there are items _at all_
-    page = paginate(page, currentPage, pageSize);
+  let dataToDisplay = data;  // Initially consider all data, decide below if it's worth paginating
+  console.log("In App, we reassinged 'data' to the new name 'dataToDisplay'");
+  console.log("In App, dataToDisplay type is:", typeof(dataToDisplay));
+  console.log("In App, dataToDisplay length is:", dataToDisplay.length);
+  console.log("In App, dataToDisplay contents is:", dataToDisplay);
+  console.log("In App, dataToDisplay is an array?:", Array.isArray(dataToDisplay));
+  if (dataToDisplay.length >= 1) {  // only paginate if there are items _at all_
+    dataToDisplay = paginate(data, currentPage, pageSize);
     console.log(`In App, currentPage is: ${currentPage}`);
-    console.log("In App, we decided to paginate, now page is:", page);
+    console.log("In App, we decided to paginate, dataToDisplay now is:", dataToDisplay);
   }
 
   return (
@@ -151,7 +151,7 @@ function App() {
         <div>Loading ...</div>
       ) : (
         <ul className="list-group">
-          {page.map((item) => (
+          {dataToDisplay.map((item) => (
             <li key={item.id} className="list-group-item">
               <a href={item.image_url}>{item.name}</a>
             </li>
@@ -159,7 +159,7 @@ function App() {
         </ul>
       )}
       <Pagination
-        items={page}
+        items={dataToDisplay}
         pageSize={pageSize}
         onPageChange={handlePageChange}
       ></Pagination>
