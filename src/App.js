@@ -99,8 +99,9 @@ function App() {
   const [query, setQuery] = useState("MIT");
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 10;
+  const url = "https://hn.algolia.com/api/v1/search?query=MIT"
   const [{ data, isLoading, isError }, doFetch] = useDataApi(
-    "https://hn.algolia.com/api/v1/search?query=MIT",
+    url,
     {
       hits: [],
     }
