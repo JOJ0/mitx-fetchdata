@@ -115,7 +115,7 @@ function App() {
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 10;
   const monthYear = getMonthYear();
-  const url = `https://api.punkapi.com/v2/beers?brewed_before=${monthYear}&abv_lt=6&per_page=30`;
+  const url = "https://hn.algolia.com/api/v1/search?query=MIT"
   const [{ data, isLoading, isError }] = useDataApi(
     url,
     {
