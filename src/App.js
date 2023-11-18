@@ -53,11 +53,14 @@ const useDataApi = (initialUrl, initialData) => {
       dispatch({ type: "FETCH_INIT" });
       try {
         const result = await axios(url);
+        console.log("in useDataApi.useEffect result is:", result);
         if (!didCancel) {
+          console.log("in useDataApi.useEffect successfully returning data:", result.data);
           dispatch({ type: "FETCH_SUCCESS", payload: result.data });
         }
       } catch (error) {
         if (!didCancel) {
+          console.log("in useDataApi.useEffect error was catched:", error);
           dispatch({ type: "FETCH_FAILURE" });
         }
       }
