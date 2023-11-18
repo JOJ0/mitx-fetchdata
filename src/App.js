@@ -3,22 +3,21 @@ import Button from 'react-bootstrap/Button';
 import axios from 'axios';
 
 const Pagination = ({ items, pageSize, onPageChange }) => {
-  // Part 2 code goes here
-  if (items.length <= 1) {
-    return null;
-  }
-  let numPages = items.length / pageSize;
-  console.log("numPages:", numPages);
-  let pages = range(1, numPages);
-  console.log("pages:", pages);
-  let list = pages.map(page => {
-      return (
-        <Button key={page} className="page-item" onClick={onPageChange}>{page}</Button>
-      );
-  })
+  // const { Button } = ReactBootstrap;
+  if (items.length <= 1) return null;
+
+  let num = Math.ceil(items.length / pageSize);
+  let pages = range(1, num + 1);
+  const list = pages.map((page) => {
+    return (
+      <Button key={page} onClick={onPageChange} className="page-item">
+        {page}
+      </Button>
+    );
+  });
   return (
     <nav>
-      <ul>{list}</ul>
+      <ul className="pagination">{list}</ul>
     </nav>
   );
 };
@@ -48,17 +47,17 @@ const useDataApi = (initialUrl, initialData) => {
   useEffect(() => {
     let didCancel = false;
     const fetchData = async () => {
-      // Part 1, step 1 code goes here
       dispatch({ type: "FETCH_INIT" });
       try {
         const result = await axios(url);
-        console.log(result.data)
-        dispatch({ type: "FETCH_SUCCESS", something: result.data});
+        if (!didCancel) {
+          dispatch({ type: "FETCH_SUCCESS", payload: result.data });
+        }
+      } catch (error) {
+        if (!didCancel) {
+          dispatch({ type: "FETCH_FAILURE" });
+        }
       }
-      catch (err) {
-        console.log("Error while fetching data:", err.message);
-        dispatch({ type: "FETCH_ERROR" });
-      } 
     };
     fetchData();
     return () => {
@@ -70,20 +69,20 @@ const useDataApi = (initialUrl, initialData) => {
 
 const dataFetchReducer = (state, action) => {
   switch (action.type) {
-    case 'FETCH_INIT':
+    case "FETCH_INIT":
       return {
         ...state,
         isLoading: true,
         isError: false,
       };
-    case 'FETCH_SUCCESS':
+    case "FETCH_SUCCESS":
       return {
         ...state,
         isLoading: false,
         isError: false,
-        data: action.something,
+        data: action.payload,
       };
-    case 'FETCH_FAILURE':
+    case "FETCH_FAILURE":
       return {
         ...state,
         isLoading: false,
@@ -97,11 +96,11 @@ const dataFetchReducer = (state, action) => {
 // App that gets data from Hacker News url
 function App() {
   const { Fragment, useState, useEffect, useReducer } = React;
-  const [query, setQuery] = useState('MIT');
+  const [query, setQuery] = useState("MIT");
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 10;
   const [{ data, isLoading, isError }, doFetch] = useDataApi(
-    'https://hn.algolia.com/api/v1/search?query=MIT',
+    "https://hn.algolia.com/api/v1/search?query=MIT",
     {
       hits: [],
     }
@@ -119,7 +118,6 @@ function App() {
       {isLoading ? (
         <div>Loading ...</div>
       ) : (
-        // Part 1, step 2 code goes here
         <ul className="list-group">
           {page.map((item) => (
             <li key={item.objectID} className="list-group-item">
@@ -137,4 +135,4 @@ function App() {
   );
 }
 
-export default App
+export default App;
