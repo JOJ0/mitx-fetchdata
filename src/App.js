@@ -3,7 +3,6 @@ import Button from 'react-bootstrap/Button';
 import axios from 'axios';
 
 const Pagination = ({ items, pageSize, onPageChange }) => {
-  // const { Button } = ReactBootstrap;
   if (items.length <= 1) return null;
 
   let num = Math.ceil(items.length / pageSize);
@@ -95,12 +94,11 @@ const dataFetchReducer = (state, action) => {
 
 // App that gets data from Hacker News url
 function App() {
-  const { Fragment, useState, useEffect, useReducer } = React;
-  const [query, setQuery] = useState("MIT");
+  const { Fragment, useState } = React;
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 10;
   const url = "https://hn.algolia.com/api/v1/search?query=MIT"
-  const [{ data, isLoading, isError }, doFetch] = useDataApi(
+  const [{ data, isLoading, isError }] = useDataApi(
     url,
     {
       hits: [],
@@ -109,11 +107,13 @@ function App() {
   const handlePageChange = (e) => {
     setCurrentPage(Number(e.target.textContent));
   };
+
   let page = data.hits;
   if (page.length >= 1) {
     page = paginate(page, currentPage, pageSize);
     console.log(`currentPage: ${currentPage}`);
   }
+
   return (
     <Fragment>
       {isLoading ? (
