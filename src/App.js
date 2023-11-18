@@ -3,6 +3,10 @@ import Button from 'react-bootstrap/Button';
 import axios from 'axios';
 
 const Pagination = ({ items, pageSize, onPageChange }) => {
+  console.log("In Pagination comp, items is type:", typeof(items));
+  console.log("In Pagination comp, items is an array?:", Array.isArray(items));
+  console.log("In Pagination comp, items length:", items.length);
+  console.log("In Pagination comp, items contents:", items);
   if (items.length <= 1) return null;
 
   let num = Math.ceil(items.length / pageSize);
@@ -109,9 +113,15 @@ function App() {
   };
 
   let page = data.hits;
-  if (page.length >= 1) {
+  console.log("In App, data.hits type is:", typeof(data.hits));
+  console.log("In App, data.hits length is:", data.hits.length);
+  console.log("In App, data.hits contents is:", data.hits);
+  console.log("In App, data.hits is an array?:", Array.isArray(data.hits));
+  console.log("In App, we reassinged data.hits to page");
+  if (page.length >= 1) {  // only paginate if there are items _at all_
     page = paginate(page, currentPage, pageSize);
-    console.log(`currentPage: ${currentPage}`);
+    console.log(`In App, currentPage is: ${currentPage}`);
+    console.log("In App, we decided to paginate, now page is:", page);
   }
 
   return (
